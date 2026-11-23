@@ -1,0 +1,5 @@
+__pycache__/
+*.pyc
+out/
+news-image-20261123-kit/
+transcripts.tar.gz
