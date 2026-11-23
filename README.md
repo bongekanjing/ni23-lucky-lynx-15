@@ -1,6 +1,8 @@
 # news-image-20261123 — the world on Monday 23 November 2026
 
 [![make.fun · news-image-20261123](https://make.fun/badge/news-image-20261123.svg)](https://make.fun/bounty/news-image-20261123?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261123)
+[![rank](https://make.fun/badge/news-image-20261123/bongekanjing/ni23-lucky-lynx-15/rank.svg)](https://make.fun/bounty/news-image-20261123/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261123)
+[![reward](https://make.fun/badge/news-image-20261123/bongekanjing/ni23-lucky-lynx-15/reward.svg)](https://make.fun/bounty/news-image-20261123?utm_source=github&utm_medium=readme&utm_campaign=news-image-20261123)
 
 One 1024 × 1024 front page that sums up Monday 23 November 2026: **58 numbered
 stories across 7 beats**, a key-figure strip of six reported numbers, four
