@@ -19,6 +19,11 @@ from pathlib import Path
 
 from PIL import Image, ImageDraw, ImageFont
 
+try:                                  # imported as tools.front
+    from . import plates
+except ImportError:                   # run as a script from the repo root
+    import plates
+
 W = H = 1024
 M = 22                      # outer margin
 INK = (17, 17, 17)
@@ -103,6 +108,7 @@ STORIES = [
 LEADS = [
     {
         "kick": "CLIMATE",
+        "plate": "climate",
         "head": "COP31 ends with no deal",
         "body": "Two weeks of talks in Antalya closed on Sunday without a text: the "
                 "draft never named coal, oil or gas, and poorer countries got no "
@@ -110,6 +116,7 @@ LEADS = [
     },
     {
         "kick": "UKRAINE",
+        "plate": "sinking",
         "head": "A warship sinks at Benghazi",
         "body": "Ukraine's security service says seven naval drones launched from a "
                 "mothership struck two Russian vessels in Libya. In Ukraine, the "
@@ -117,6 +124,7 @@ LEADS = [
     },
     {
         "kick": "MARKETS",
+        "plate": "selloff",
         "head": "Asia sells off on AI fears",
         "body": "Regional shares fell hard as doubts about the returns on AI spending "
                 "spread, and Washington threatened penalties for datacenters its "
@@ -124,6 +132,7 @@ LEADS = [
     },
     {
         "kick": "POLITICS",
+        "plate": "breach",
         "head": "A second FBI database breach",
         "body": "The bureau is investigating an apparent intrusion into the National "
                 "Crime Information Center, months after the last one, in a week of "
@@ -221,23 +230,29 @@ def render(out_path):
     d.line([M, y, W - M, y], fill=RULE, width=1)
     y += 9
 
-    # four typographic leads across the measure, divided by hairlines
+    # four typographic leads across the measure, divided by hairlines, each
+    # with a small drawn plate above its kicker: the vignette is what carries
+    # the lead at contact-sheet size, where the body type cannot be read
     gap = 12
     lw = (inner - 3 * gap) / 4
-    lh = 132
+    plate_h = max(30, int(round(lw * 0.36)))
+    plate_off = plate_h + 5
+    lh = 132 + plate_off
     for i, lead in enumerate(LEADS):
         lx = M + i * (lw + gap)
+        getattr(plates, lead["plate"])(d, (lx, y, int(lw), plate_h))
         f_k = font("Oswald-Bold.ttf", 10)
-        d.text((lx, y), lead["kick"], font=f_k, fill=RED)
-        d.line([lx, y + 13, lx + lw - 4, y + 13], fill=(206, 200, 188), width=1)
+        d.text((lx, y + plate_off), lead["kick"], font=f_k, fill=RED)
+        d.line([lx, y + plate_off + 13, lx + lw - 4, y + plate_off + 13],
+               fill=(206, 200, 188), width=1)
         f_h = font("PlayfairDisplay-Bold.ttf", 19)
         hl = wrap(d, lead["head"], f_h, lw - 4)
-        ty = y + 19
+        ty = y + plate_off + 19
         for ln in hl[:3]:
             d.text((lx, ty), ln, font=f_h, fill=INK)
             ty += 21
         f_b = font("DejaVuSans.ttf", 9)
-        for j, ln in enumerate(wrap(d, lead["body"], f_b, lw - 4)[:7]):
+        for j, ln in enumerate(wrap(d, lead["body"], f_b, lw - 4)[:6]):
             d.text((lx, ty + 3 + j * 12), ln, font=f_b, fill=(52, 50, 46))
         if i:
             d.line([lx - gap // 2, y + 2, lx - gap // 2, y + lh - 6],
